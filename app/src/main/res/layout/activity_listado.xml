@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context=".listado">
 
     <!-- Botón grande arriba, de lado a lado -->
@@ -15,7 +16,42 @@
         android:layout_margin="16dp"
         android:text="Regresar"
         android:textSize="20sp"
+        android:onClick="Regresar"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- ScrollView: deja bajar con el dedo si hay muchas filas -->
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="16dp"
+        app:layout_constraintTop_toBottomOf="@id/btnRegresar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- La tabla vacía; las filas se agregan desde Java -->
+        <TableLayout
+            android:id="@+id/tblistado"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#CCCCCC"
+            android:stretchColumns="*" />
+
+    </ScrollView>
+
+    <!-- Mensaje cuando no hay datos. Empieza oculto (gone);
+         desde Java se pone VISIBLE si la lista está vacía -->
+    <TextView
+        android:id="@+id/txtvacio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No hay datos registrados"
+        android:textSize="20sp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/btnRegresar"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
