@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
     public void Listar(View vista) {
-        startActivity(new Intent(this, Listado.class));
+        startActivity(new Intent(this, listado.class));
     }
 
     public void Guardar(View vista) {
@@ -83,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
                 selectionArgs,
                 null,
                 null,
-                null,
+                null
         )) {
             if (cursor.moveToFirst()) {
                 txtnombre.setText(cursor.getString(
@@ -115,5 +116,38 @@ public class MainActivity extends AppCompatActivity {
         String[] selectionArgs = {id};
         int count = db.update(FeedReaderContract.FeedEntry.nameTable, values, selection, selectionArgs);
         mostrarMensaje("Se actualizó " + count + "registro(s_");
+    }
+
+    public void Elminar (View vista) {
+        String id = leerId();
+        if (id==null) return;
+
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String selection = FeedReaderContract.FeedEntry._ID + " = ?";
+        String[] selectionArgs = {id};
+        int deletedRows = db.delete(FeedReaderContract.FeedEntry.nameTable, selection, selectionArgs);
+        if (deletedRows > 0) {
+            limpiarCampos();
+        }
+        mostrarMensaje("Se elimino " + deletedRows + " registro(s)");
+    }
+
+    private String leerId() {
+        String id = txtid.getText().toString().trim();
+        if (id.isEmpty()) {
+            mostrarMensaje("Ingrese el Id del registro");
+            return null;
+        }
+        return id;
+    }
+
+    private void limpiarCampos() {
+        txtid.setText("");
+        txtnombre.setText("");
+        txtapellido.setText("");
+    }
+
+    private void mostrarMensaje(String mensaje) {
+        Toast.makeText(this, mensaje, Toast.LENGTH_LONG).show();
     }
 }

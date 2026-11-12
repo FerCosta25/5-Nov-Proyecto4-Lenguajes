@@ -20,7 +20,7 @@ import java.util.Arrays;
 public class listado extends AppCompatActivity {
 
     private final String[] cabecera = {"Nombre", "Apellido", "Cédula"};
-    private final ArrayList<String> datos = new ArrayList<>();
+    private final ArrayList<String[]> datos = new ArrayList<>();
     private FeedReaderDbHelper dbHelper;
 
     @Override
@@ -36,7 +36,7 @@ public class listado extends AppCompatActivity {
         } else {
             DynamicTable creaTabla = new DynamicTable(tblistado, this);
             creaTabla.setCabecera(cabecera);
-            creaTabla.setDatos((ArrayList<String[]>) datos);
+            creaTabla.setDatos(datos);
             creaTabla.crearCabecera();
             creaTabla.crearFilas();
         }
@@ -53,7 +53,7 @@ public class listado extends AppCompatActivity {
                 FeedReaderContract.FeedEntry.column1,
                 FeedReaderContract.FeedEntry.column2
         };
-        String sortOrder = FeedReaderContract.FeedEntry.column2 + "ASC";
+        String sortOrder = FeedReaderContract.FeedEntry.column2 + " ASC";
         try(Cursor cursor = db.query(
                 FeedReaderContract.FeedEntry.nameTable,
                 projection,
@@ -71,7 +71,7 @@ public class listado extends AppCompatActivity {
                         cursor.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.column1));
                 fila[2] = cursor.getString(
                         cursor.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.column2));
-                datos.add(Arrays.toString(fila));
+                datos.add(fila);
             }
         }
     }
